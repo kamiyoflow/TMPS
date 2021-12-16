@@ -1,8 +1,13 @@
 package com.company.data.prototype;
 
+import com.company.court.Law;
+
 public class Archives implements Prototype {
     String name, typeOfCrime, crimeAdress;
     int id, criminalAge;
+    private Law lawState;
+
+
 
     public Archives(int id, String name, int criminalAge, String typeOfCrime, String crimeAdress) {
         this.name = name;
@@ -10,6 +15,15 @@ public class Archives implements Prototype {
         this.crimeAdress = crimeAdress;
         this.criminalAge = criminalAge;
         this.id = id;
+        lawState = null;
+    }
+
+    public Law getLawState() {
+        return lawState;
+    }
+
+    public void setLawState(Law lawState) {
+        this.lawState = lawState;
     }
 
     public void showCrime(){

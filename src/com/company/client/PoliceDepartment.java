@@ -2,6 +2,8 @@ package com.company.client;
 import com.company.Police.Dispatch911;
 import com.company.Police.singleton.Administration;
 import com.company.Police.factorymethod.GenerateCall;
+import com.company.court.CommunityService;
+import com.company.court.Imprison;
 import com.company.data.prototype.Archives;
 import com.company.Police.facade.Arrest;
 import com.company.Police.decorator.*;
@@ -12,8 +14,9 @@ import java.io.*;
 
 public class PoliceDepartment {
 
+
     public static void main(String[] args) throws IOException {
-        String yourType;
+        String yourType, yourJudge, yourJudge1;
         GenerateCall getGeneratedCall = new GenerateCall();
         System.out.println("This is the Police Department of Texas!");
         System.out.println("===============================================");
@@ -30,67 +33,81 @@ public class PoliceDepartment {
 
             System.out.println("Hold on! We got you");
             D.getCall();
+        } else if (yourType.equalsIgnoreCase("2")) {
+            BufferedReader Crime = new BufferedReader(new InputStreamReader(System.in));
+
+            System.out.print("Enter Criminal Id: ");
+            int cid = Integer.parseInt(Crime.readLine());
+            System.out.print("\n");
+
+            System.out.print("Enter Criminal Name: ");
+            String cname = Crime.readLine();
+            System.out.print("\n");
+
+            System.out.print("Enter Criminal Age: ");
+            int cage = Integer.parseInt(Crime.readLine());
+            System.out.print("\n");
+
+            System.out.print("Enter Criminal Address: ");
+            String caddress = Crime.readLine();
+            System.out.print("\n");
+
+            System.out.print("Enter Type of Crime: ");
+            String tOfCrime = Crime.readLine();
+            System.out.print("\n");
+
+            Archives criminalInfo = new Archives(cid, cname, cage, tOfCrime, caddress);
+
+            criminalInfo.showCrime();
+            System.out.println("\n");
+            Archives archivedCriminalInfo = (Archives) criminalInfo.getClone();
+            System.out.println("Archived info which will be transferred to FBI");
+            archivedCriminalInfo.showCrime();
+            System.out.println("Do you want to become a judge for this criminal? \n 1. Yes\n 2. No\n");
+            BufferedReader judge = new BufferedReader(new InputStreamReader(System.in));
+            yourJudge = judge.readLine();
+            if (yourJudge.equalsIgnoreCase("1")) {
+                System.out.println("Then let the judgment begin!");
+                System.out.println("This criminal did the following: " + tOfCrime);
+                System.out.println("His sentence? \n 1. Imprison \n 2. Obligatory Community Service");
+                BufferedReader deepJudge = new BufferedReader(new InputStreamReader(System.in));
+                yourJudge1 = deepJudge.readLine();
+                if (yourJudge1.equalsIgnoreCase("1")) {
+                    Imprison imprisonState = new Imprison();
+                    imprisonState.setSentence(criminalInfo);
+                    System.out.println(criminalInfo.getLawState().toString());
+                } else if (yourJudge1.equalsIgnoreCase("2")) {
+                    CommunityService obligatoryState = new CommunityService();
+                    obligatoryState.setSentence(criminalInfo);
+                    System.out.println(criminalInfo.getLawState().toString());
+                } else if (yourJudge.equalsIgnoreCase("2")) {
+                    System.out.println("Ok, we'll take care of it then!");
+                } else if (yourType.equalsIgnoreCase("3")) {
+                    Administration order = Administration.getOrder();
+                    order.showConfirmation();
+                } else if (yourType.equalsIgnoreCase("4")) {
+                    Arrest Arr = new Arrest();
+                    Arr.Arresting();
+                } else if (yourType.equalsIgnoreCase("5")) {
+                    Arrest Arr = new Arrest();
+                    Arr.Patrolling();
+                } else if (yourType.equalsIgnoreCase("6")) {
+                    criminalBoard crimB1 = new thief(new thief(new thief(new criminalBoardImpl())));
+                    criminalBoard crimB2 = new maniac(new thief(new thief(new maniac(new drugDealer(new drugDealer(new criminalBoardImpl()))))));
+                    System.out.println(crimB1.attach());
+                    System.out.println(crimB2.attach());
+                } else if (yourType.equalsIgnoreCase("7")) {
+                    System.out.println("Your gun, cowboy! Take your time!");
+                    Weapon glock = new Glock();
+                    WeaponAdapter glockAdpt = new WeaponAdapterImpl(glock);
+                    System.out.println(glockAdpt.getWeapon());
+                    Weapon m4 = new M4A1();
+                    WeaponAdapter m4Adpt = new WeaponAdapterImpl(m4);
+                    System.out.println(m4Adpt.getWeapon());
+                }
+            }
+
+
         }
-        else if(yourType.equalsIgnoreCase("2")) {
-            BufferedReader Crime =new BufferedReader(new InputStreamReader(System.in));
-
-        System.out.print("Enter Criminal Id: ");
-        int cid = Integer.parseInt(Crime.readLine());
-        System.out.print("\n");
-
-        System.out.print("Enter Criminal Name: ");
-        String cname = Crime.readLine();
-        System.out.print("\n");
-
-        System.out.print("Enter Criminal Age: ");
-        int cage = Integer.parseInt(Crime.readLine());
-        System.out.print("\n");
-
-        System.out.print("Enter Criminal Address: ");
-        String caddress = Crime.readLine();
-        System.out.print("\n");
-
-        System.out.print("Enter Type of Crime: ");
-        String tOfCrime = Crime.readLine();
-        System.out.print("\n");
-
-        Archives criminalInfo = new Archives(cid,cname,cage,tOfCrime,caddress);
-
-        criminalInfo.showCrime();
-        System.out.println("\n");
-        Archives archivedCriminalInfo = (Archives) criminalInfo.getClone();
-        System.out.println("Archived info which will be transferred to FBI");
-        archivedCriminalInfo.showCrime();
     }
-        else if(yourType.equalsIgnoreCase("3")) {
-            Administration order = Administration.getOrder();
-            order.showConfirmation();
-        }
-        else if(yourType.equalsIgnoreCase("4")) {
-            Arrest Arr = new Arrest();
-            Arr.Arresting();
-        }
-        else if(yourType.equalsIgnoreCase("5")) {
-            Arrest Arr = new Arrest();
-            Arr.Patrolling();
-        }
-        else if(yourType.equalsIgnoreCase("6")) {
-            criminalBoard crimB1 = new thief(new thief(new thief(new criminalBoardImpl())));
-            criminalBoard crimB2 = new maniac(new thief(new thief(new maniac(new drugDealer(new drugDealer(new criminalBoardImpl()))))));
-            System.out.println(crimB1.attach());
-            System.out.println(crimB2.attach());
-        }
-        else if(yourType.equalsIgnoreCase("7")) {
-            System.out.println("Your gun, cowboy! Take your time!");
-            Weapon glock = new Glock();
-            WeaponAdapter glockAdpt = new WeaponAdapterImpl(glock);
-            System.out.println(glockAdpt.getWeapon());
-            Weapon m4 = new M4A1();
-            WeaponAdapter m4Adpt = new WeaponAdapterImpl(m4);
-            System.out.println(m4Adpt.getWeapon());
-        }
-    }
-
-
-
 }
